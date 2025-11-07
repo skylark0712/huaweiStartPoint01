@@ -1,4 +1,5 @@
 import { promptAction } from '@kit.ArkUI';
+import ConnectionUtils from '../common/network/ConnectionUtils';
 
 @Entry
 @Component
@@ -19,22 +20,24 @@ struct LoginPage {
     .backgroundColor('#F1F3F5')
   }
 
-  login(_result: boolean): void {
+  login(result: boolean): void {
     if (this.account === '' || this.password === '') {
-      try {
         promptAction.showToast({
           message: '账号密码不能为空！'
         })
-      } catch (error) {
-
-      }
     } else {
       this.isShowProgress = true;
       if (this.timeOutId === -1) {
         this.timeOutId = setTimeout(() => {
           this.isShowProgress = false;
           this.timeOutId = -1;
-          this.pathStack.pushPathByName('MainPage', null);
+          if (result) {
+            this.pathStack.pushPathByName('MainPage', null);
+          } else {
+            this.getUIContext().getPromptAction().showToast({
+              message: '无网络连接，无法登录'
+            });
+          }
         }, 2000);
       }
     }
@@ -96,7 +99,7 @@ struct LoginPage {
           .backgroundColor('#007DFF')
           .margin({ top: '48vp', bottom: '12vp' })
           .onClick(() => {
-            this.login(true);
+            this.login(ConnectionUtils.isNetworkConnected());
           })
         Text('注册账号')
           .fontColor('#007DFF')
