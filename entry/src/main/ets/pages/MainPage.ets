@@ -11,6 +11,7 @@ export function MainPageBuilder() {
 export struct MainPage {
   @StorageLink('fontSizeOffset') fontSizeOffset: number = 0
   @State currentIndex: number = 0
+  @State pathStack: NavPathStack = new NavPathStack()
   private tabsController: TabsController = new TabsController()
 
   aboutToAppear() {
@@ -49,7 +50,7 @@ export struct MainPage {
         controller: this.tabsController
       }) {
         TabContent() {
-          Home()
+          Home({ pathStack: this.pathStack })
         }
         .padding({ left: '12vp', right: '12vp' })
         .backgroundColor('#F1F3F5')

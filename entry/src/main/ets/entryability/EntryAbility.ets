@@ -3,6 +3,7 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 import ConnectionUtils from '../common/network/ConnectionUtils';
 import preferenceUtilsObject from '../common/database/PreferenceUtil';
+import RDBStoreUtil from '../common/database/RDBStoreUtil';
 
 const DOMAIN = 0x0000;
 
@@ -29,6 +30,7 @@ export default class EntryAbility extends UIAbility {
       // Window immersive.
       data.setWindowLayoutFullScreen(true);
     });
+    RDBStoreUtil.createObjectiveRDB(this.context);
     windowStage.loadContent('pages/LoginPage', (err, data) => {
       if (err.code) {
         hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);

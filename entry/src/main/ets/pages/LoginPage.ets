@@ -32,7 +32,7 @@ struct LoginPage {
           this.isShowProgress = false;
           this.timeOutId = -1;
           if (result) {
-            this.pathStack.pushPathByName('MainPage', null);
+            this.pathStack.pushPathByName('MainPage', null)
           } else {
             this.getUIContext().getPromptAction().showToast({
               message: '无网络连接，无法登录'

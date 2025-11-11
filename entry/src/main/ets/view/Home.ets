@@ -6,11 +6,12 @@ import { common } from '@kit.AbilityKit';
 
 @Component
 export default struct Home {
-  @StorageLink('fontSizeOffset') fontSizeOffset: number = 0;
+  @StorageLink('fontSizeOffset') fontSizeOffset: number = 0
   @State httpGridItems: Array<ListInfo> = []
   @State pictureUri: string = ''
+  @Link pathStack: NavPathStack
   private swiperController: SwiperController = new SwiperController()
-  private context = getContext(this) as common.UIAbilityContext
+  private context = this.getUIContext().getHostContext() as common.UIAbilityContext
   private applicationContext = this.context.getApplicationContext()
   private cacheDir = this.applicationContext.filesDir
 
@@ -45,7 +46,7 @@ export default struct Home {
           .autoPlay(true)
 
           Grid() {
-            ForEach(mainViewModel.getFirstGridData(), (item: ItemData) => {
+            ForEach(mainViewModel.getFirstGridData(), (item: ItemData, index: number) => {
               GridItem() {
                 Column() {
                   Image(item.img)
@@ -56,6 +57,12 @@ export default struct Home {
                     .margin({ top: '4vp' })
                 }
               }
+              .onClick(() => {
+                if (index === 4) {
+                  this.pathStack.pushPathByName('GoalPage', null)
+                  console.info('叭叭啦叭')
+                }
+              })
             }, (item: ItemData) => JSON.stringify(item))
           }
           .columnsTemplate('1fr 1fr 1fr 1fr')
