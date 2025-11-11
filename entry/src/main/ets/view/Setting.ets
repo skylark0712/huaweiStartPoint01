@@ -1,11 +1,20 @@
-import ItemData from '../viewmodel/ItemData';
-import mainViewModel from '../viewmodel/MainViewModel';
+import ItemData from '../viewmodel/ItemData'
+import mainViewModel from '../viewmodel/MainViewModel'
+import { SliderCustomDialog } from './SliderCustomDialog'
 
 @Preview
 @Component
 export default struct Setting {
+  @StorageLink('fontSizeOffset') fontSizeOffset: number = 0
+  SliderCustomDialogController: CustomDialogController = new CustomDialogController({
+    builder: SliderCustomDialog({}),
+    alignment: DialogAlignment.Bottom,
+    customStyle: true,
+    offset: { dx: 0, dy: -25 }
+  })
+
   @Builder
-  settingCell(item: ItemData) {
+  settingCell(item: ItemData, customDialogController: CustomDialogController) {
     Row() {
       Row() {
         Image(item.img)
@@ -26,6 +35,11 @@ export default struct Setting {
         Toggle({ type: ToggleType.Switch, isOn: false })
       }
     }
+    .onClick(() => {
+      if (item.id === 1) {
+        customDialogController.open()
+      }
+    })
     .justifyContent(FlexAlign.SpaceBetween)
     .width('100%')
     .padding({
@@ -63,7 +77,7 @@ export default struct Setting {
           ListItemGroup() {
             ForEach(item, (cell: ItemData) => {
               ListItem() {
-                this.settingCell(cell)
+                this.settingCell(cell, this.SliderCustomDialogController)
               }
               .height('48vp')
             })

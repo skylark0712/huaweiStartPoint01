@@ -3,10 +3,10 @@ import ItemData from '../viewmodel/ItemData'
 import mainViewModel from '../viewmodel/MainViewModel'
 import ListInfo from '../viewmodel/ResponseData/ListInfo'
 import { common } from '@kit.AbilityKit';
-import { RCPUtils } from '../common/network/RCPUtils';
 
 @Component
 export default struct Home {
+  @StorageLink('fontSizeOffset') fontSizeOffset: number = 0;
   @State httpGridItems: Array<ListInfo> = []
   @State pictureUri: string = ''
   private swiperController: SwiperController = new SwiperController()
@@ -23,15 +23,6 @@ export default struct Home {
       this.pictureUri = value
     })
     httpUtil.destroyHttpRequest()
-
-    // let rcpUtil: RCPUtils = new RCPUtils();
-    // await rcpUtil.postRCPRequest().then((value: Array<ListInfo>) => {
-    //   this.httpGridItems = value;
-    // });
-    // await rcpUtil.getRCPRequest(this.cacheDir).then((value: string) => {
-    //   this.pictureUri = value;
-    // });
-    // rcpUtil.destroySession();
   }
 
   build() {
@@ -40,7 +31,7 @@ export default struct Home {
         .width('100%')
         .margin({ top: '48vp', bottom: '12vp' })
         .fontWeight(700)
-        .fontSize('26fp')
+        .fontSize(26 + this.fontSizeOffset)
 
       Scroll() {
         Column() {
@@ -61,7 +52,7 @@ export default struct Home {
                     .width('40vp')
                     .height('40vp')
                   Text(item.title)
-                    .fontSize('12fp')
+                    .fontSize(12 + this.fontSizeOffset)
                     .margin({ top: '4vp' })
                 }
               }
@@ -100,7 +91,7 @@ export default struct Home {
                       .width('190vp')
                       .textOverflow({ overflow: TextOverflow.Ellipsis })
                       .maxLines(1)
-                      .fontSize('16fp')
+                      .fontSize(16 + this.fontSizeOffset)
                       .fontWeight(FontWeight.Medium)
 
                     Text(secondItem.theme)
@@ -108,7 +99,7 @@ export default struct Home {
                       .textOverflow({ overflow: TextOverflow.Ellipsis })
                       .maxLines(2)
                       .margin({ top: '4vp' })
-                      .fontSize('12fp')
+                      .fontSize(12 + this.fontSizeOffset)
                       .fontColor('#99182431')
                     Row() {
                       Image(this.pictureUri)

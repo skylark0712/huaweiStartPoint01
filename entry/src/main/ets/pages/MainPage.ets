@@ -1,3 +1,4 @@
+import preferenceUtilsObject from '../common/database/PreferenceUtil'
 import Home from '../view/Home'
 import Setting from '../view/Setting'
 
@@ -8,8 +9,13 @@ export function MainPageBuilder() {
 
 @Component
 export struct MainPage {
-  @State currentIndex: number = 0;
-  private tabsController: TabsController = new TabsController();
+  @StorageLink('fontSizeOffset') fontSizeOffset: number = 0
+  @State currentIndex: number = 0
+  private tabsController: TabsController = new TabsController()
+
+  aboutToAppear() {
+    this.fontSizeOffset = preferenceUtilsObject.getChangeFontSize()
+  }
 
   @Builder
   TabBuilder(title: ResourceStr, index: number, selectedImg: Resource) {
